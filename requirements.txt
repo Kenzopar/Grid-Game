@@ -1,0 +1,2 @@
+# No external dependencies required
+flask==2.3.3
