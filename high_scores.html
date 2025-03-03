@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Scores</title>
+</head>
+<body>
+    <h1>High Scores</h1>
+
+    <!-- High Scores Section -->
+    <div class="high-scores">
+        <h2>High Scores</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Difficulty</th>
+                    <th>Last 10 High Scores</th>
+                </tr>
+            </thead>
+            <tbody id="high-scores-body">
+                <tr>
+                    <td>Mini</td>
+                    <td>
+                        <ul>
+                            {% for score in scores.mini %}
+                                <li>{{ score }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Easy</td>
+                    <td>
+                        <ul>
+                            {% for score in scores.easy %}
+                                <li>{{ score }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Medium</td>
+                    <td>
+                        <ul>
+                            {% for score in scores.medium %}
+                                <li>{{ score }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Hard</td>
+                    <td>
+                        <ul>
+                            {% for score in scores.hard %}
+                                <li>{{ score }}</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Submit Your Score</h2>
+    <form id="scoreForm">
+        <input type="text" name="difficulty" placeholder="Difficulty (mini/easy/medium/hard)" required>
+        <input type="number" name="score" placeholder="Your Score" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('scoreForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('/submit_score', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      alert('Score submitted successfully!');
+                      location.reload(); // Reload to see updated scores
+                  }
+              });
+        });
+    </script>
+</body>
+</html>
